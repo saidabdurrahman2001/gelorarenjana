@@ -78,6 +78,14 @@
             flex-wrap: wrap;
         }
 
+        .filter-label {
+            margin-top: 20px;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95em;
+        }
+
         .filter-btn {
             padding: 10px 25px;
             font-size: 1em;
@@ -88,6 +96,13 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 600;
+            position: relative;
+        }
+
+        .filter-count {
+            font-size: 0.85em;
+            opacity: 0.8;
+            margin-left: 4px;
         }
 
         .filter-btn:hover {
@@ -99,6 +114,116 @@
             background: #667eea;
             color: white;
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Collapsible Prodi Filter */
+        .prodi-filter-section {
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .prodi-filter-section.active {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        /* Scrollable filter buttons */
+        .prodi-filter-section .filter-buttons,
+        .university-filter-section .filter-buttons {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        /* Scrollbar styling */
+        .prodi-filter-section .filter-buttons::-webkit-scrollbar,
+        .university-filter-section .filter-buttons::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .prodi-filter-section .filter-buttons::-webkit-scrollbar-track,
+        .university-filter-section .filter-buttons::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .prodi-filter-section .filter-buttons::-webkit-scrollbar-thumb,
+        .university-filter-section .filter-buttons::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        .prodi-filter-section .filter-buttons::-webkit-scrollbar-thumb:hover,
+        .university-filter-section .filter-buttons::-webkit-scrollbar-thumb:hover {
+            background: #5568d3;
+        }
+
+        .toggle-prodi-btn {
+            padding: 10px 15px;
+            font-size: 0.9em;
+            border: 2px solid #999;
+            background: white;
+            color: #333;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .toggle-prodi-btn:hover {
+            background: #f0f0f0;
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .toggle-prodi-btn.open {
+            color: #667eea;
+            border-color: #667eea;
+        }
+
+        /* University Filter Toggle */
+        .toggle-university-btn {
+            padding: 10px 15px;
+            font-size: 0.9em;
+            border: 2px solid #999;
+            background: white;
+            color: #333;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .toggle-university-btn:hover {
+            background: #f0f0f0;
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .toggle-university-btn.open {
+            color: #667eea;
+            border-color: #667eea;
+        }
+
+        /* Collapsible University Filter Section */
+        .university-filter-section {
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .university-filter-section.active {
+            max-height: 500px;
+            opacity: 1;
         }
 
         .container {
@@ -501,6 +626,99 @@
                 transform: scale(1);
             }
         }
+
+        /* Image Fullscreen Viewer */
+        .image-viewer-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .image-viewer-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-viewer-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            animation: zoomIn 0.3s ease-out;
+        }
+
+        .image-viewer-content img {
+            width: 100%;
+            height: auto;
+            max-height: 90vh;
+            border-radius: 8px;
+        }
+
+        .image-viewer-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            border-radius: 50%;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .image-viewer-close:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Instagram Link Style */
+        .instagram-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .instagram-link:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .modal-avatar-lg.clickable {
+            cursor: pointer;
+        }
+
+        .modal-avatar-lg.clickable:hover {
+            filter: brightness(1.1);
+        }
+
+        /* Image error handling */
+        img.broken {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -516,10 +734,26 @@
         </div>
 
         <div class="filter-buttons">
-            <button class="filter-btn active" onclick="filterByClass('all')">Semua</button>
-            <button class="filter-btn" onclick="filterByClass('A')">Kelas A</button>
-            <button class="filter-btn" onclick="filterByClass('B')">Kelas B</button>
-            <button class="filter-btn" onclick="filterByClass('C')">Kelas C</button>
+            <button class="filter-btn active" onclick="filterByClass('all')">Semua <span class="filter-count">(0)</span></button>
+            <button class="filter-btn" onclick="filterByClass('A')">Kelas A <span class="filter-count">(0)</span></button>
+            <button class="filter-btn" onclick="filterByClass('B')">Kelas B <span class="filter-count">(0)</span></button>
+            <button class="filter-btn" onclick="filterByClass('C')">Kelas C <span class="filter-count">(0)</span></button>
+        </div>
+
+        <button class="toggle-prodi-btn" onclick="toggleProdiFilter()">📚 Filter Berdasarkan Jurusan ▼</button>
+        <div class="prodi-filter-section" id="prodiFilterSection">
+            <div class="filter-label">📚 Filter Berdasarkan Jurusan:</div>
+            <div class="filter-buttons" id="prodiFilterContainer">
+                <!-- Jurusan filter buttons akan ditampilkan di sini -->
+            </div>
+        </div>
+
+        <button class="toggle-university-btn" onclick="toggleUniversityFilter()">🏫 Filter Berdasarkan Universitas ▼</button>
+        <div class="university-filter-section" id="universityFilterSection">
+            <div class="filter-label">🏫 Filter Berdasarkan Universitas:</div>
+            <div class="filter-buttons" id="universityFilterContainer">
+                <!-- Universitas filter buttons akan ditampilkan di sini -->
+            </div>
         </div>
     </div>
 
@@ -573,6 +807,14 @@
         </div>
     </div>
 
+    <!-- Image Fullscreen Viewer -->
+    <div class="image-viewer-overlay" id="imageViewerOverlay">
+        <button class="image-viewer-close" onclick="closeImageViewer()">&times;</button>
+        <div class="image-viewer-content">
+            <img id="imageViewerImg" src="" alt="Full Preview">
+        </div>
+    </div>
+
     <script>
         // Fetch data dari data2.json
         let anggota = [];
@@ -583,6 +825,7 @@
                 const response = await fetch('data2.json');
                 anggota = await response.json();
                 filteredAnggota = anggota;
+                initializeFilters();
                 renderCards(anggota);
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -592,6 +835,86 @@
 
         let filteredAnggota = anggota;
         let currentFilter = 'all';
+        let currentProdiFilters = []; // Array untuk multi-filter jurusan
+        let currentUniversityFilters = []; // Array untuk multi-filter universitas
+
+        // Calculate counts for classes, prodis, and universities
+        function calculateCounts() {
+            const klasCounts = { A: 0, B: 0, C: 0, all: anggota.length };
+            const prodiCounts = {};
+            const universityCounts = {};
+
+            anggota.forEach(item => {
+                // Count by class
+                if (item.Kelas) {
+                    klasCounts[item.Kelas]++;
+                }
+                // Count by prodi
+                if (item['Program Studi']) {
+                    const prodi = item['Program Studi'];
+                    prodiCounts[prodi] = (prodiCounts[prodi] || 0) + 1;
+                }
+                // Count by university
+                if (item['Nama Perguruan Tinggi']) {
+                    const university = item['Nama Perguruan Tinggi'];
+                    universityCounts[university] = (universityCounts[university] || 0) + 1;
+                }
+            });
+
+            return { klasCounts, prodiCounts, universityCounts };
+        }
+
+        // Initialize counts and create prodi and university buttons
+        function initializeFilters() {
+            const { klasCounts, prodiCounts, universityCounts } = calculateCounts();
+
+            // Update class filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.parentElement.id === 'prodiFilterContainer') return;
+                
+                const text = btn.textContent.trim();
+                let kelas = null;
+                if (text.includes('Semua')) kelas = 'all';
+                else if (text.includes('Kelas A')) kelas = 'A';
+                else if (text.includes('Kelas B')) kelas = 'B';
+                else if (text.includes('Kelas C')) kelas = 'C';
+
+                if (kelas) {
+                    const count = klasCounts[kelas];
+                    // Remove existing count span
+                    const existingSpan = btn.querySelector('.filter-count');
+                    if (existingSpan) existingSpan.remove();
+                    
+                    // Get clean label text
+                    const cleanLabel = btn.textContent.trim();
+                    btn.innerHTML = cleanLabel + ` <span class="filter-count">(${count})</span>`;
+                }
+            });
+
+            // Create prodi filter buttons
+            const prodiContainer = document.getElementById('prodiFilterContainer');
+            prodiContainer.innerHTML = '';
+            
+            Object.entries(prodiCounts).sort().forEach(([prodi, count]) => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.innerHTML = `${prodi} <span class="filter-count">(${count})</span>`;
+                btn.onclick = () => filterByProdi(prodi);
+                prodiContainer.appendChild(btn);
+            });
+
+            // Create university filter buttons
+            const universityContainer = document.getElementById('universityFilterContainer');
+            universityContainer.innerHTML = '';
+            
+            Object.entries(universityCounts).sort().forEach(([university, count]) => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.innerHTML = `${university} <span class="filter-count">(${count})</span>`;
+                btn.onclick = () => filterByUniversity(university);
+                universityContainer.appendChild(btn);
+            });
+        }
 
         // Render Cards
         function renderCards(data) {
@@ -611,7 +934,7 @@
                 <div class="card kelas-${item.Kelas}" onclick="openModal('${item.NIP}')" data-nip="${item.NIP}">
                     <div class="card-header">
                         <div class="card-avatar">
-                            ${item.Image && item.Image !== '-' ? `<img src="${item.Image}" alt="${item['Nama Peserta']}">` : namaAwal}
+                            ${item.Image && item.Image !== '-' ? `<img src="${item.Image}" alt="${item['Nama Peserta']}" onerror="handleImageError(this)">` : namaAwal}
                         </div>
                         <div class="card-info">
                             <h3>${item['Nama Peserta']}</h3>
@@ -630,33 +953,172 @@
         // Filter by Class
         function filterByClass(kelas) {
             currentFilter = kelas;
+            currentProdiFilters = []; // Reset prodi filters
+            currentUniversityFilters = []; // Reset university filters
+            updateFilterButtons();
+            applyFilters();
+        }
+
+        // Toggle Filter by Prodi (Multi-select)
+        function filterByProdi(prodi) {
+            const index = currentProdiFilters.indexOf(prodi);
+            if (index > -1) {
+                // Jika sudah dipilih, hapus (toggle off)
+                currentProdiFilters.splice(index, 1);
+            } else {
+                // Jika belum dipilih, tambah (toggle on)
+                currentProdiFilters.push(prodi);
+            }
+            updateFilterButtons();
+            applyFilters();
+        }
+
+        // Toggle Filter by University (Multi-select)
+        function filterByUniversity(university) {
+            const index = currentUniversityFilters.indexOf(university);
+            if (index > -1) {
+                // Jika sudah dipilih, hapus (toggle off)
+                currentUniversityFilters.splice(index, 1);
+            } else {
+                // Jika belum dipilih, tambah (toggle on)
+                currentUniversityFilters.push(university);
+            }
             updateFilterButtons();
             applyFilters();
         }
 
         // Update Filter Buttons UI
         function updateFilterButtons() {
+            // Update class filter buttons
             document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.parentElement.id === 'prodiFilterContainer') return;
                 btn.classList.remove('active');
             });
-            event.target.classList.add('active');
+            
+            // Set active class button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.parentElement.id === 'prodiFilterContainer') return;
+                const text = btn.textContent.trim();
+                if ((currentFilter === 'all' && text.includes('Semua')) ||
+                    (currentFilter === 'A' && text.includes('Kelas A')) ||
+                    (currentFilter === 'B' && text.includes('Kelas B')) ||
+                    (currentFilter === 'C' && text.includes('Kelas C'))) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Update prodi filter buttons (multi-select)
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.parentElement.id !== 'prodiFilterContainer') return;
+                btn.classList.remove('active');
+                
+                // Check if any prodi in button matches currentProdiFilters
+                for (let prodi of currentProdiFilters) {
+                    if (btn.textContent.includes(prodi)) {
+                        btn.classList.add('active');
+                        break;
+                    }
+                }
+            });
+
+            // Update university filter buttons (multi-select)
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.parentElement.id !== 'universityFilterContainer') return;
+                btn.classList.remove('active');
+                
+                // Check if any university in button matches currentUniversityFilters
+                for (let university of currentUniversityFilters) {
+                    if (btn.textContent.includes(university)) {
+                        btn.classList.add('active');
+                        break;
+                    }
+                }
+            });
         }
 
-        // Apply Filters (Class + Search)
+        // Apply Filters (Class + Search + Multiple Prodis + Multiple Universities)
         function applyFilters() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             
             filteredAnggota = anggota.filter(item => {
                 const matchClass = currentFilter === 'all' || item.Kelas === currentFilter;
                 const matchSearch = item['Nama Peserta'].toLowerCase().includes(searchTerm);
-                return matchClass && matchSearch;
+                // If no prodi filters selected, match all; otherwise check if item's prodi is in filters
+                const matchProdi = currentProdiFilters.length === 0 || currentProdiFilters.includes(item['Program Studi']);
+                // If no university filters selected, match all; otherwise check if item's university is in filters
+                const matchUniversity = currentUniversityFilters.length === 0 || currentUniversityFilters.includes(item['Nama Perguruan Tinggi']);
+                return matchClass && matchSearch && matchProdi && matchUniversity;
             });
 
             renderCards(filteredAnggota);
         }
 
+        // Toggle Prodi Filter Section
+        function toggleProdiFilter() {
+            const section = document.getElementById('prodiFilterSection');
+            const btn = document.querySelector('.toggle-prodi-btn');
+            
+            section.classList.toggle('active');
+            btn.classList.toggle('open');
+            
+            // Update arrow direction
+            const text = btn.textContent;
+            if (section.classList.contains('active')) {
+                btn.textContent = '📚 Filter Berdasarkan Jurusan ▲';
+            } else {
+                btn.textContent = '📚 Filter Berdasarkan Jurusan ▼';
+            }
+        }
+
+        // Toggle University Filter Section
+        function toggleUniversityFilter() {
+            const section = document.getElementById('universityFilterSection');
+            const btn = document.querySelector('.toggle-university-btn');
+            
+            section.classList.toggle('active');
+            btn.classList.toggle('open');
+            
+            // Update arrow direction
+            const text = btn.textContent;
+            if (section.classList.contains('active')) {
+                btn.textContent = '🏫 Filter Berdasarkan Universitas ▲';
+            } else {
+                btn.textContent = '🏫 Filter Berdasarkan Universitas ▼';
+            }
+        }
+
         // Search Event Listener
         document.getElementById('searchInput').addEventListener('keyup', applyFilters);
+
+        // Function to handle image loading errors
+        function handleImageError(img) {
+            // Jika gambar gagal load, coba format alternatif
+            const src = img.src;
+            const withoutExt = src.substring(0, src.lastIndexOf('.'));
+            const formats = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+            
+            // Get current extension
+            const currentExt = src.substring(src.lastIndexOf('.'));
+            const otherFormats = formats.filter(f => f !== currentExt);
+            
+            // Try alternative formats
+            let found = false;
+            for (let format of otherFormats) {
+                const newSrc = withoutExt + format;
+                const testImg = new Image();
+                testImg.onload = function() {
+                    img.src = newSrc;
+                    found = true;
+                };
+                testImg.src = newSrc;
+                if (found) break;
+            }
+            
+            // If all fail, show fallback
+            if (!found) {
+                img.style.display = 'none';
+            }
+        }
 
         // Modal Functions
         function openModal(nip) {
@@ -670,14 +1132,31 @@
                 document.getElementById('modalGender').textContent = anggotaData['Jenis Kelamin'];
                 document.getElementById('modalUniversity').textContent = anggotaData['Nama Perguruan Tinggi'];
                 document.getElementById('modalProdi').textContent = anggotaData['Program Studi'];
-                document.getElementById('modalIG').textContent = anggotaData.IG !== '-' ? anggotaData.IG : 'Tidak tersedia';
+                
+                // Render Instagram as clickable link
+                const igElement = document.getElementById('modalIG');
+                if (anggotaData.IG !== '-') {
+                    const igUsername = anggotaData.IG.replace('@', '');
+                    igElement.innerHTML = `<a href="https://instagram.com/${igUsername}" target="_blank" class="instagram-link">${anggotaData.IG}</a>`;
+                } else {
+                    igElement.textContent = 'Tidak tersedia';
+                }
+                
                 document.getElementById('modalWA').textContent = anggotaData['No WA'] !== '-' ? anggotaData['No WA'] : 'Tidak tersedia';
                 
                 const avatarElement = document.getElementById('modalAvatar');
                 if (anggotaData.Image && anggotaData.Image !== '-') {
-                    avatarElement.innerHTML = `<img src="${anggotaData.Image}" alt="${anggotaData['Nama Peserta']}">`;
+                    avatarElement.innerHTML = `<img src="${anggotaData.Image}" alt="${anggotaData['Nama Peserta']}" class="clickable-image" style="cursor: pointer;" onerror="handleImageError(this)">`;
+                    avatarElement.classList.add('clickable');
+                    // Add click handler for fullscreen image
+                    const imgElement = avatarElement.querySelector('img');
+                    imgElement.onclick = (e) => {
+                        e.stopPropagation();
+                        openImageViewer(anggotaData.Image);
+                    };
                 } else {
                     avatarElement.innerHTML = namaAwal;
+                    avatarElement.classList.remove('clickable');
                 }
                 
                 const overlay = document.getElementById('modalOverlay');
@@ -690,6 +1169,20 @@
             overlay.classList.remove('active');
         }
 
+        // Image Fullscreen Viewer Functions
+        function openImageViewer(imageSrc) {
+            const imgElement = document.getElementById('imageViewerImg');
+            imgElement.src = imageSrc;
+            imgElement.onerror = function() {
+                handleImageError(this);
+            };
+            document.getElementById('imageViewerOverlay').classList.add('active');
+        }
+
+        function closeImageViewer() {
+            document.getElementById('imageViewerOverlay').classList.remove('active');
+        }
+
         // Close modal when clicking outside the modal content
         document.getElementById('modalOverlay').addEventListener('click', function(e) {
             if (e.target === this) {
@@ -697,10 +1190,27 @@
             }
         });
 
+        // Close image viewer when clicking outside
+        document.getElementById('imageViewerOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeImageViewer();
+            }
+        });
+
         // Close modal with Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                closeModal();
+                const imageViewer = document.getElementById('imageViewerOverlay');
+                const modal = document.getElementById('modalOverlay');
+                
+                // Close image viewer first if it's open
+                if (imageViewer.classList.contains('active')) {
+                    closeImageViewer();
+                } 
+                // Otherwise close modal
+                else if (modal.classList.contains('active')) {
+                    closeModal();
+                }
             }
         });
 

@@ -32,25 +32,31 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 5px 20px; /* reduced vertical padding for slim look */
+            padding: 8px 15px;
+            min-height: 50px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         .nav-logo {
-            font-size: 1.2em;
+            font-size: 1.1em;
             font-weight: 700;
             color: #5D5FEF;
+            white-space: nowrap;
         }
         .nav-menu {
             display: flex;
-            gap: 15px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
         .nav-btn {
             text-decoration: none;
             color: #5D5FEF;
-            padding: 6px 18px; /* slimmer button */
+            padding: 6px 16px;
             border-radius: 50px;
             transition: all 0.3s;
             font-weight: 600;
-            font-size: 0.95em; /* slightly smaller */
+            font-size: 0.92em;
+            white-space: nowrap;
         }
         .nav-btn.active {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -415,12 +421,43 @@
                 padding: 15px;
             }
 
+            /* Mobile navbar adjustments */
+            .global-nav {
+                padding: 6px 10px;
+                gap: 8px;
+                margin: 10px auto;
+            }
+
+            .nav-logo {
+                font-size: 0.95em;
+                flex: 1 0 auto;
+            }
+
+            .nav-menu {
+                width: 100%;
+                gap: 8px;
+                justify-content: flex-start;
+            }
+
+            .nav-btn {
+                padding: 4px 10px;
+                font-size: 0.8em;
+                flex: 1 1 auto;
+                text-align: center;
+            }
+
             .cards-grid {
                 grid-template-columns: 1fr;
             }
 
             .header h1 {
                 font-size: 1.3em;
+            }
+
+            .card-action button {
+                width: 100%;
+                padding: 10px 15px;
+                font-size: 0.95em;
             }
         }
 

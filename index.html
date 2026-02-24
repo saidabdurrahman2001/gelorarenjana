@@ -95,10 +95,26 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .result-badge {
+            background: rgba(102, 126, 234, 0.15);
+            color: #667eea;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.7em;
+            font-weight: 700;
+            white-space: nowrap;
+            display: inline-block;
+            border: 1px solid rgba(102, 126, 234, 0.3);
         }
 
         .search-container {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .search-container input {
@@ -384,11 +400,8 @@
             font-size: 1.2em;
         }
 
-        .no-results svg {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 20px;
-            opacity: 0.7;
+        .result-count {
+            display: none;
         }
 
         /* Responsive Design */
@@ -810,7 +823,7 @@
         </div>
     </nav>
     <div class="header">
-        <h1>📚 Database Angkatan Gelora Renjana</h1>
+        <h1>📚 Database Angkatan Gelora Renjana<span class="result-badge">Total: <span id="badgeCount">0</span></span></h1>
         
         <div class="search-container">
             <input 
@@ -1007,14 +1020,18 @@
         function renderCards(data) {
             const container = document.getElementById('cardsContainer');
             const noResults = document.getElementById('noResults');
+            const badgeCount = document.getElementById('badgeCount');
 
             if (data.length === 0) {
                 container.innerHTML = '';
                 noResults.style.display = 'block';
+                badgeCount.textContent = '0';
                 return;
             }
 
             noResults.style.display = 'none';
+            badgeCount.textContent = data.length;
+            
             container.innerHTML = data.map((item, index) => {
                 const namaAwal = item['Nama Peserta'].split(' ')[0].substring(0, 2).toUpperCase();
                 return `

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perpustakaan Materi Gelora Renjana</title>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pap6Z7Y7VfQJ+6a+6YmQG3fJ+iijKZt3t7vOfSa9GaN5U/6V4a3N+9n0B3WC2+3kYp+v9R+gYV4zF8N9D0YvAA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+        /* global sticky navbar */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            max-width: 1200px;
+            margin: 15px auto;
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 20px;
+        }
+        .nav-logo {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #5D5FEF;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+        }
+        .nav-btn {
+            text-decoration: none;
+            color: #5D5FEF;
+            padding: 6px 18px;
+            border-radius: 50px;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        .nav-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .nav-btn:hover {
+            background: rgba(102,126,234,0.1);
+        }
+
+        .header {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: slideDown 0.6s ease-out;
+            text-align: center;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 2em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: default;
+            border-left: 5px solid #667eea;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+        }
+
+        .card-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .card-action button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card-action button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- global sticky navbar -->
+    <nav class="global-nav">
+        <div class="nav-logo">Gelora Renjana</div>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-btn">Database Anggota</a>
+            <a href="materi.html" class="nav-btn active">Perpustakaan Materi</a>
+        </div>
+    </nav>
+    <div class="header">
+        <h1>📚 Perpustakaan Materi Gelora Renjana</h1>
+    </div>
+
+    <div class="container">
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/microscope.png" alt="Mikro Ekonomi"></div>
+                <h3>Mikro Ekonomi</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1pX-I5c_eqCBEIVy47PnOSku5l2f53JcI?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/globe--v1.png" alt="Makro Ekonomi"></div>
+                <h3>Makro Ekonomi</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1ykSI6m5x0VrsrnszzoAoHLzoK4rwMl47?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/calculator.png" alt="Akuntansi"></div>
+                <h3>Akuntansi</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1-ZSWjYphNU_LpgX_zTmL93QXAO0r9_Y8?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/wallet.png" alt="Keuangan"></div>
+                <h3>Keuangan</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1qUdUkqh_2A6q7wAiGxZhH15mK7TUoDO7?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/money-bag.png" alt="Ekonomi Moneter"></div>
+                <h3>Ekonomi Moneter</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/19b9ayEMk7z-9yo5EbelplDVxwarLYwEy?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/bank-building.png" alt="Sistem dan Lembaga Keuangan"></div>
+                <h3>Sistem dan Lembaga Keuangan</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1DUP6Ys3njRM9TL1kUcDWUDbFaRH-wY6t?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/document.png" alt="Pengantar Kebijakan Fiskal"></div>
+                <h3>Pengantar Kebijakan Fiskal</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/11vYgry88A1HgeYAm6p59-2mnFRmFhnVb?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/mosque.png" alt="Ekonomi Keuangan Syariah"></div>
+                <h3>Ekonomi Keuangan Syariah</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/13GGMhi-xrVPnHSWM67HASWLPw0DG03Mo?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/survey.png" alt="Metodologi Survey dan Tekni Wawancara"></div>
+                <h3>Metodologi Survey dan Tekni Wawancara</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1iEbHUkxorJ4fyDsWfOcK6OFQWnCTlULk?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/bar-chart.png" alt="Ekonomi Pembangunan"></div>
+                <h3>Ekonomi Pembangunan</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1vW-KSXYuIf9IqotNTpsu1biHZFkkTLki?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/globe--v1.png" alt="Ekonomi Internasional"></div>
+                <h3>Ekonomi Internasional</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1JJoYvSUo8eQgIqW8N-7DFFRXwqHHaY-8?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/map.png" alt="Ekonomi Regional"></div>
+                <h3>Ekonomi Regional</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1KsuGAQcrA8TxbZFXxM4tVYgNA5QJpBYL?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/statistics.png" alt="Konsep & Penyusunan Statistika: PDB & Inflasi"></div>
+                <h3>Konsep & Penyusunan Statistika: PDB & Inflasi</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1pSAcfkHsJPx8HmgQTtbSKVSWXQEDCh37?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

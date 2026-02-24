@@ -17,6 +17,48 @@
             min-height: 100vh;
             padding: 30px 20px;
         }
+        /* global sticky navbar */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            max-width: 1200px;
+            margin: 15px auto;
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 20px; /* reduced vertical padding for slim look */
+        }
+        .nav-logo {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #5D5FEF;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+        }
+        .nav-btn {
+            text-decoration: none;
+            color: #5D5FEF;
+            padding: 6px 18px; /* slimmer button */
+            border-radius: 50px;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.95em; /* slightly smaller */
+        }
+        .nav-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .nav-btn:hover {
+            background: rgba(102,126,234,0.1);
+        }
 
         .header {
             max-width: 1200px;
@@ -722,6 +764,14 @@
     </style>
 </head>
 <body>
+    <!-- global sticky navbar -->
+    <nav class="global-nav">
+        <div class="nav-logo">Gelora Renjana</div>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-btn active">Database Anggota</a>
+            <a href="materi.html" class="nav-btn">Perpustakaan Materi</a>
+        </div>
+    </nav>
     <div class="header">
         <h1>📚 Database Angkatan Gelora Renjana</h1>
         

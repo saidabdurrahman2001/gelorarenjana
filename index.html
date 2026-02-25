@@ -277,6 +277,7 @@
             border-color: #667eea;
         }
 
+
         /* Collapsible University Filter Section */
         .university-filter-section {
             overflow: hidden;
@@ -288,6 +289,10 @@
         .university-filter-section.active {
             max-height: 500px;
             opacity: 1;
+        }
+
+        .gender-toggle-container {
+            margin-top: 20px;
         }
 
         .container {
@@ -855,6 +860,14 @@
                 <!-- Universitas filter buttons akan ditampilkan di sini -->
             </div>
         </div>
+
+        <div class="gender-toggle-container">
+            <div class="filter-label">👥 Filter Berdasarkan Gender:</div>
+            <div class="filter-buttons" id="genderToggleContainer">
+                <button class="filter-btn" data-gender="Laki-laki" onclick="filterByGender('Laki-laki')">Laki-laki</button>
+                <button class="filter-btn" data-gender="Perempuan" onclick="filterByGender('Perempuan')">Perempuan</button>
+            </div>
+        </div>
     </div>
 
     <div class="container">
@@ -937,6 +950,7 @@
         let currentFilter = 'all';
         let currentProdiFilters = []; // Array untuk multi-filter jurusan
         let currentUniversityFilters = []; // Array untuk multi-filter universitas
+        let currentGenderFilter = 'all'; // Single toggle gender
 
         // Calculate counts for classes, prodis, and universities
         function calculateCounts() {
@@ -1014,6 +1028,7 @@
                 btn.onclick = () => filterByUniversity(university);
                 universityContainer.appendChild(btn);
             });
+
         }
 
         // Render Cards
@@ -1059,6 +1074,7 @@
             currentFilter = kelas;
             currentProdiFilters = []; // Reset prodi filters
             currentUniversityFilters = []; // Reset university filters
+            currentGenderFilter = 'all'; // Reset gender filters
             updateFilterButtons();
             applyFilters();
         }
@@ -1087,6 +1103,13 @@
                 // Jika belum dipilih, tambah (toggle on)
                 currentUniversityFilters.push(university);
             }
+            updateFilterButtons();
+            applyFilters();
+        }
+
+        // Toggle Filter by Gender (Single toggle)
+        function filterByGender(gender) {
+            currentGenderFilter = currentGenderFilter === gender ? 'all' : gender;
             updateFilterButtons();
             applyFilters();
         }
@@ -1138,9 +1161,17 @@
                     }
                 }
             });
+
+            // Update gender toggle buttons
+            document.querySelectorAll('#genderToggleContainer .filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.gender === currentGenderFilter) {
+                    btn.classList.add('active');
+                }
+            });
         }
 
-        // Apply Filters (Class + Search + Multiple Prodis + Multiple Universities)
+        // Apply Filters (Class + Search + Multiple Prodis + Multiple Universities + Gender)
         function applyFilters() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             
@@ -1151,7 +1182,9 @@
                 const matchProdi = currentProdiFilters.length === 0 || currentProdiFilters.includes(item['Program Studi']);
                 // If no university filters selected, match all; otherwise check if item's university is in filters
                 const matchUniversity = currentUniversityFilters.length === 0 || currentUniversityFilters.includes(item['Nama Perguruan Tinggi']);
-                return matchClass && matchSearch && matchProdi && matchUniversity;
+                // If no gender selected, match all; otherwise check exact gender
+                const matchGender = currentGenderFilter === 'all' || item['Jenis Kelamin'] === currentGenderFilter;
+                return matchClass && matchSearch && matchProdi && matchUniversity && matchGender;
             });
 
             renderCards(filteredAnggota);

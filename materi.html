@@ -40,10 +40,21 @@
             gap: 10px;
         }
         .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-size: 1.1em;
             font-weight: 700;
             color: #0A3D78;
             white-space: nowrap;
+        }
+
+        .brand-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
         }
         .nav-menu {
             display: flex;
@@ -97,6 +108,19 @@
             color: #333333;
             margin-bottom: 10px;
             font-size: 2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
         }
 
         .container {
@@ -207,6 +231,11 @@
                 flex: 1 0 auto;
             }
 
+            .brand-logo {
+                width: 26px;
+                height: 26px;
+            }
+
             .nav-menu {
                 width: 100%;
                 gap: 8px;
@@ -226,6 +255,11 @@
 
             .header h1 {
                 font-size: 1.5em;
+            }
+
+            .header-logo {
+                width: 34px;
+                height: 34px;
             }
 
             .card-action button {
@@ -274,14 +308,17 @@
 <body>
     <!-- global sticky navbar -->
     <nav class="global-nav">
-        <div class="nav-logo">Gelora Renjana</div>
+        <div class="nav-logo">
+            <img src="img/logo-gelora.png" alt="Logo Gelora Renjana" class="brand-logo">
+            <span>Gelora Renjana</span>
+        </div>
         <div class="nav-menu">
             <a href="index.html" class="nav-btn">Database Anggota</a>
             <a href="materi.html" class="nav-btn active">Perpustakaan Materi</a>
         </div>
     </nav>
     <div class="header">
-        <h1>📚 Perpustakaan Materi Gelora Renjana</h1>
+        <h1><img src="img/logo-gelora.png" alt="Logo Gelora Renjana" class="header-logo"> Perpustakaan Materi Gelora Renjana</h1>
     </div>
 
     <div class="container">

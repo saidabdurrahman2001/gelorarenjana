@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Angkatan</title>
+    <meta name="theme-color" content="#0A3D78">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Gelora Renjana">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/logo-gelora.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/logo-gelora.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/logo-gelora.png">
+    <link rel="shortcut icon" href="img/logo-gelora.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Public Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #F8F9FA;
+            min-height: 100vh;
+            padding: 30px 20px;
+            color: #333333;
+        }
+        /* global sticky navbar */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            max-width: 1200px;
+            margin: 15px auto;
+            background: #FFFFFF;
+            border: 1px solid #E9ECEF;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 15px;
+            min-height: 50px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #0A3D78;
+            white-space: nowrap;
+        }
+
+        .brand-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            text-decoration: none;
+            color: #0A3D78;
+            padding: 6px 16px;
+            border-radius: 50px;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.92em;
+            white-space: nowrap;
+        }
+        .nav-btn.active {
+            background: #0A3D78;
+            color: white;
+            box-shadow: 0 6px 14px rgba(10, 61, 120, 0.18);
+        }
+        .nav-btn:hover {
+            background: #EAF1F8;
+            color: #0A3D78;
+        }
+
+        .header {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            background: #FFFFFF;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #E9ECEF;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            color: #333333;
+            margin-bottom: 25px;
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .result-badge {
+            background: #EAF1F8;
+            color: #0A3D78;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.7em;
+            font-weight: 700;
+            white-space: nowrap;
+            display: inline-block;
+            border: 1px solid #C8DAEE;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 1em;
+            border: 1px solid #D5DEE8;
+            border-radius: 999px;
+            background: #FFFFFF;
+            color: #333333;
+            transition: all 0.3s ease;
+        }
+
+        .search-container input:focus {
+            outline: none;
+            border-color: #0A3D78;
+            box-shadow: 0 0 0 4px rgba(10, 61, 120, 0.12);
+            background: #FFFFFF;
+        }
+
+        .search-container input::placeholder {
+            color: #8A95A5;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            margin-top: 20px;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: #334155;
+            font-size: 0.95em;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            font-size: 0.95em;
+            border: 1px solid #D5DEE8;
+            background: #FFFFFF;
+            color: #0A3D78;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .filter-count {
+            font-size: 0.85em;
+            opacity: 0.8;
+            margin-left: 4px;
+        }
+
+        .filter-btn:hover {
+            background: #F1F5F9;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: #0A3D78;
+            color: white;
+            border-color: #0A3D78;
+            box-shadow: 0 6px 14px rgba(10, 61, 120, 0.18);
+        }
+
+        /* Collapsible Prodi Filter */
+        .prodi-filter-section {
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .prodi-filter-section.active {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        /* Scrollable filter buttons */
+        .prodi-filter-section .filter-buttons,
+        .university-filter-section .filter-buttons {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        /* Scrollbar styling */
+        .prodi-filter-section .filter-buttons::-webkit-scrollbar,
+        .university-filter-section .filter-buttons::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .prodi-filter-section .filter-buttons::-webkit-scrollbar-track,
+        .university-filter-section .filter-buttons::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .prodi-filter-section .filter-buttons::-webkit-scrollbar-thumb,
+        .university-filter-section .filter-buttons::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        .prodi-filter-section .filter-buttons::-webkit-scrollbar-thumb:hover,
+        .university-filter-section .filter-buttons::-webkit-scrollbar-thumb:hover {
+            background: #5568d3;
+        }
+
+        .toggle-prodi-btn {
+            padding: 10px 15px;
+            font-size: 0.9em;
+            border: 1px solid #D5DEE8;
+            background: #FFFFFF;
+            color: #334155;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .toggle-prodi-btn:hover {
+            background: #F1F5F9;
+            border-color: #0A3D78;
+            transform: translateY(-2px);
+        }
+
+        .toggle-prodi-btn.open {
+            color: #0A3D78;
+            border-color: #0A3D78;
+        }
+
+        /* University Filter Toggle */
+        .toggle-university-btn {
+            padding: 10px 15px;
+            font-size: 0.9em;
+            border: 1px solid #D5DEE8;
+            background: #FFFFFF;
+            color: #334155;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .toggle-university-btn:hover {
+            background: #F1F5F9;
+            border-color: #0A3D78;
+            transform: translateY(-2px);
+        }
+
+        .toggle-university-btn.open {
+            color: #0A3D78;
+            border-color: #0A3D78;
+        }
+
+
+        /* Collapsible University Filter Section */
+        .university-filter-section {
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .university-filter-section.active {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        .gender-toggle-container {
+            margin-top: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: #FFFFFF;
+            border-radius: 12px;
+            padding: 22px;
+            border: 1px solid #E9ECEF;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+        }
+
+        .card.kelas-A {
+            border-left-color: transparent;
+        }
+
+        .card.kelas-B {
+            border-left-color: transparent;
+        }
+
+        .card.kelas-C {
+            border-left-color: transparent;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+        }
+
+        .card-avatar {
+            width: 84px;
+            height: 84px;
+            border-radius: 12px;
+            background: #EAF1F8;
+            color: #0A3D78;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            object-fit: cover;
+            overflow: hidden;
+        }
+
+        .card-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-info h3 {
+            color: #1F2937;
+            margin-bottom: 4px;
+            font-size: 1.12em;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .card-info .kelas {
+            color: rgba(51, 51, 51, 0.7);
+            font-size: 0.84em;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .card-info .nim {
+            color: rgba(51, 51, 51, 0.65);
+            font-size: 0.82em;
+            font-weight: 500;
+        }
+
+        .card-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-details {
+            border-top: none;
+            padding-top: 8px;
+            font-size: 0.86em;
+            color: rgba(51, 51, 51, 0.7);
+        }
+
+        .card-details p {
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-icon {
+            color: #0A3D78;
+            opacity: 0.85;
+            font-size: 0.95em;
+            min-width: 14px;
+            text-align: center;
+        }
+
+        .detail-btn {
+            margin-top: 12px;
+            padding: 7px 14px;
+            border: 1px solid #0A3D78;
+            background: transparent;
+            color: #0A3D78;
+            border-radius: 999px;
+            font-size: 0.82em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-end;
+        }
+
+        .detail-btn:hover {
+            background: #0A3D78;
+            color: #FFFFFF;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748B;
+            font-size: 1.2em;
+        }
+
+        .result-count {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .cards-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+            }
+
+            .filter-buttons {
+                gap: 8px;
+            }
+
+            .filter-btn {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            /* Mobile navbar adjustments */
+            .global-nav {
+                padding: 6px 10px;
+                gap: 8px;
+                margin: 10px auto;
+            }
+
+            .nav-logo {
+                font-size: 0.95em;
+                flex: 1 0 auto;
+            }
+
+            .brand-logo {
+                width: 26px;
+                height: 26px;
+            }
+
+            .nav-menu {
+                width: 100%;
+                gap: 8px;
+                justify-content: flex-start;
+            }
+
+            .nav-btn {
+                padding: 4px 10px;
+                font-size: 0.8em;
+                flex: 1 1 auto;
+                text-align: center;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.3em;
+            }
+
+            .header-logo {
+                width: 34px;
+                height: 34px;
+            }
+
+            .card-action button {
+                width: 100%;
+                padding: 10px 15px;
+                font-size: 0.95em;
+            }
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 50px;
+            max-width: 600px;
+            width: 95%;
+            max-height: 90vh;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+            position: relative;
+            animation: slideInUp 0.5s ease-out;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 45px;
+            height: 45px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.8em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: #333;
+        }
+
+        .modal-close:hover {
+            background: #667eea;
+            color: white;
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .modal-avatar-lg {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4em;
+            font-weight: bold;
+            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.4);
+            animation: avatarZoom 0.6s ease-out;
+            overflow: hidden;
+        }
+
+        .modal-avatar-lg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 35px;
+            border-bottom: 3px solid #f0f0f0;
+            padding-bottom: 25px;
+        }
+
+        .modal-header h2 {
+            color: #333;
+            font-size: 2.2em;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-header .kelas-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 35px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 1.1em;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .modal-details {
+            margin-bottom: 35px;
+        }
+
+        .modal-details p {
+            font-size: 1.05em;
+            color: #555;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .modal-details p:hover {
+            background: #f0f0f0;
+            transform: translateX(5px);
+        }
+
+        .modal-details .label {
+            font-weight: 700;
+            color: #667eea;
+            min-width: 80px;
+            font-size: 1.2em;
+        }
+
+        .modal-action {
+            text-align: center;
+        }
+
+        .modal-action button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 50px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.05em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .modal-action button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .modal-action button:active {
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                padding: 40px 30px;
+                max-width: 90vw;
+            }
+
+            .modal-header h2 {
+                font-size: 1.8em;
+            }
+
+            .modal-avatar-lg {
+                width: 160px;
+                height: 160px;
+                font-size: 3em;
+            }
+
+            .modal-close {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5em;
+                top: 15px;
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-content {
+                padding: 30px 20px;
+                width: 95vw;
+            }
+
+            .modal-header h2 {
+                font-size: 1.5em;
+            }
+
+            .modal-avatar-lg {
+                width: 130px;
+                height: 130px;
+                font-size: 2.5em;
+                margin-bottom: 20px;
+            }
+
+            .modal-details p {
+                font-size: 0.95em;
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+
+            .modal-action button {
+                padding: 12px 30px;
+                font-size: 0.95em;
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(80px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes avatarZoom {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Image Fullscreen Viewer */
+        .image-viewer-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .image-viewer-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-viewer-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            animation: zoomIn 0.3s ease-out;
+        }
+
+        .image-viewer-content img {
+            width: 100%;
+            height: auto;
+            max-height: 90vh;
+            border-radius: 8px;
+        }
+
+        .image-viewer-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            border-radius: 50%;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .image-viewer-close:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Instagram Link Style */
+        .instagram-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .instagram-link:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .modal-avatar-lg.clickable {
+            cursor: pointer;
+        }
+
+        .modal-avatar-lg.clickable:hover {
+            filter: brightness(1.1);
+        }
+
+        /* Image error handling */
+        img.broken {
+            display: none !important;
+        }
+
+        .back-to-top {
+            position: fixed;
+            right: 20px;
+            bottom: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(10, 61, 120, 0.9);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #FFFFFF;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.10);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(8px);
+            transition: all 0.25s ease;
+            z-index: 1100;
+        }
+
+        .back-to-top:hover {
+            background: #0A3D78;
+            color: #FFFFFF;
+            transform: translateY(0);
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- global sticky navbar -->
+    <nav class="global-nav">
+        <div class="nav-logo">
+            <img src="img/logo-gelora.png" alt="Logo Gelora Renjana" class="brand-logo">
+            <span>Gelora Renjana</span>
+        </div>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-btn active">Database Anggota</a>
+            <a href="materi.html" class="nav-btn">Perpustakaan Materi</a>
+        </div>
+    </nav>
+    <div class="header">
+        <h1><img src="img/logo-gelora.png" alt="Logo Gelora Renjana" class="header-logo"> Database Angkatan Gelora Renjana<span class="result-badge">Total: <span id="badgeCount">0</span></span></h1>
+        
+        <div class="search-container">
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="🔍 Cari nama anggota..."
+            >
+        </div>
+
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterByClass('all')">Semua <span class="filter-count">(0)</span></button>
+            <button class="filter-btn" onclick="filterByClass('A')">Kelas A <span class="filter-count">(0)</span></button>
+            <button class="filter-btn" onclick="filterByClass('B')">Kelas B <span class="filter-count">(0)</span></button>
+            <button class="filter-btn" onclick="filterByClass('C')">Kelas C <span class="filter-count">(0)</span></button>
+        </div>
+
+        <button class="toggle-prodi-btn" onclick="toggleProdiFilter()">📚 Filter Berdasarkan Jurusan ▼</button>
+        <div class="prodi-filter-section" id="prodiFilterSection">
+            <div class="filter-label">📚 Filter Berdasarkan Jurusan:</div>
+            <div class="filter-buttons" id="prodiFilterContainer">
+                <!-- Jurusan filter buttons akan ditampilkan di sini -->
+            </div>
+        </div>
+
+        <button class="toggle-university-btn" onclick="toggleUniversityFilter()">🏫 Filter Berdasarkan Universitas ▼</button>
+        <div class="university-filter-section" id="universityFilterSection">
+            <div class="filter-label">🏫 Filter Berdasarkan Universitas:</div>
+            <div class="filter-buttons" id="universityFilterContainer">
+                <!-- Universitas filter buttons akan ditampilkan di sini -->
+            </div>
+        </div>
+
+        <div class="gender-toggle-container">
+            <div class="filter-label">👥 Filter Berdasarkan Gender:</div>
+            <div class="filter-buttons" id="genderToggleContainer">
+                <button class="filter-btn" data-gender="Laki-laki" onclick="filterByGender('Laki-laki')">Laki-laki</button>
+                <button class="filter-btn" data-gender="Perempuan" onclick="filterByGender('Perempuan')">Perempuan</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="cards-grid" id="cardsContainer">
+            <!-- Cards akan ditampilkan di sini -->
+        </div>
+        <div id="noResults" class="no-results" style="display: none;">
+            Tidak ada hasil yang ditemukan 😢
+        </div>
+    </div>
+
+    <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">↑</button>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="modal-avatar-lg" id="modalAvatar"></div>
+            <div class="modal-header">
+                <h2 id="modalName"></h2>
+                <span class="kelas-badge" id="modalKelas"></span>
+            </div>
+            <div class="modal-details">
+                <p>
+                    <span class="label">🆔 NIP:</span>
+                    <span id="modalNIP"></span>
+                </p>
+                <p>
+                    <span class="label">👤 Gender:</span>
+                    <span id="modalGender"></span>
+                </p>
+                <p>
+                    <span class="label">🎓 Program Studi:</span>
+                    <span id="modalProdi"></span>
+                </p>
+                <p>
+                    <span class="label">🏫 Universitas:</span>
+                    <span id="modalUniversity"></span>
+                </p>
+                <p>
+                    <span class="label">📱 Instagram:</span>
+                    <span id="modalIG"></span>
+                </p>
+                <p>
+                    <span class="label">💬 No WA:</span>
+                    <span id="modalWA"></span>
+                </p>
+            </div>
+            <div class="modal-action">
+                <button onclick="closeModal()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Fullscreen Viewer -->
+    <div class="image-viewer-overlay" id="imageViewerOverlay">
+        <button class="image-viewer-close" onclick="closeImageViewer()">&times;</button>
+        <div class="image-viewer-content">
+            <img id="imageViewerImg" src="" alt="Full Preview">
+        </div>
+    </div>
+
+    <script>
+        // Fetch data dari data2.json
+        let anggota = [];
+
+        // Load data dari JSON file
+        async function loadData() {
+            try {
+                const response = await fetch('data2.json');
+                anggota = await response.json();
+                filteredAnggota = anggota;
+                initializeFilters();
+                renderCards(anggota);
+            } catch (error) {
+                console.error('Error loading data:', error);
+                alert('Gagal memuat data. Pastikan file data2.json tersedia.');
+            }
+        }
+
+        let filteredAnggota = anggota;
+        let currentFilter = 'all';
+        let currentProdiFilters = []; // Array untuk multi-filter jurusan
+        let currentUniversityFilters = []; // Array untuk multi-filter universitas
+        let currentGenderFilter = 'all'; // Single toggle gender
+
+        // Calculate counts for classes, prodis, and universities
+        function calculateCounts() {
+            const klasCounts = { A: 0, B: 0, C: 0, all: anggota.length };
+            const prodiCounts = {};
+            const universityCounts = {};
+
+            anggota.forEach(item => {
+                // Count by class
+                if (item.Kelas) {
+                    klasCounts[item.Kelas]++;
+                }
+                // Count by prodi
+                if (item['Program Studi']) {
+                    const prodi = item['Program Studi'];
+                    prodiCounts[prodi] = (prodiCounts[prodi] || 0) + 1;
+                }
+                // Count by university
+                if (item['Nama Perguruan Tinggi']) {
+                    const university = item['Nama Perguruan Tinggi'];
+                    universityCounts[university] = (universityCounts[university] || 0) + 1;
+                }
+            });
+
+            return { klasCounts, prodiCounts, universityCounts };
+        }
+
+        // Initialize counts and create prodi and university buttons
+        function initializeFilters() {
+            const { klasCounts, prodiCounts, universityCounts } = calculateCounts();
+
+            // Update class filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.parentElement.id === 'prodiFilterContainer') return;
+                
+                const text = btn.textContent.trim();
+                let kelas = null;
+                if (text.includes('Semua')) kelas = 'all';
+                else if (text.includes('Kelas A')) kelas = 'A';
+                else if (text.includes('Kelas B')) kelas = 'B';
+                else if (text.includes('Kelas C')) kelas = 'C';
+
+                if (kelas) {
+                    const count = klasCounts[kelas];
+                    // Remove existing count span
+                    const existingSpan = btn.querySelector('.filter-count');
+                    if (existingSpan) existingSpan.remove();
+                    
+                    // Get clean label text
+                    const cleanLabel = btn.textContent.trim();
+                    btn.innerHTML = cleanLabel + ` <span class="filter-count">(${count})</span>`;
+                }
+            });
+
+            // Create prodi filter buttons
+            const prodiContainer = document.getElementById('prodiFilterContainer');
+            prodiContainer.innerHTML = '';
+            
+            Object.entries(prodiCounts).sort().forEach(([prodi, count]) => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.innerHTML = `${prodi} <span class="filter-count">(${count})</span>`;
+                btn.onclick = () => filterByProdi(prodi);
+                prodiContainer.appendChild(btn);
+            });
+
+            // Create university filter buttons
+            const universityContainer = document.getElementById('universityFilterContainer');
+            universityContainer.innerHTML = '';
+            
+            Object.entries(universityCounts).sort().forEach(([university, count]) => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.innerHTML = `${university} <span class="filter-count">(${count})</span>`;
+                btn.onclick = () => filterByUniversity(university);
+                universityContainer.appendChild(btn);
+            });
+
+        }
+
+        // Render Cards
+        function renderCards(data) {
+            const container = document.getElementById('cardsContainer');
+            const noResults = document.getElementById('noResults');
+            const badgeCount = document.getElementById('badgeCount');
+
+            if (data.length === 0) {
+                container.innerHTML = '';
+                noResults.style.display = 'block';
+                badgeCount.textContent = '0';
+                return;
+            }
+
+            noResults.style.display = 'none';
+            badgeCount.textContent = data.length;
+            
+            container.innerHTML = data.map((item, index) => {
+                const namaAwal = item['Nama Peserta'].split(' ')[0].substring(0, 2).toUpperCase();
+                return `
+                <div class="card kelas-${item.Kelas}" onclick="openModal('${item.NIP}')" data-nip="${item.NIP}">
+                    <div class="card-header">
+                        <div class="card-avatar">
+                            ${item.Image && item.Image !== '-' ? `<img src="${item.Image}" alt="${item['Nama Peserta']}" onerror="handleImageError(this)">` : namaAwal}
+                        </div>
+                        <div class="card-info">
+                            <h3>${item['Nama Peserta']}</h3>
+                            <div class="nim">NIP ${item.NIP}</div>
+                            <div class="kelas">Kelas ${item.Kelas}</div>
+                            <div class="card-details">
+                                <p><span class="detail-icon">🎓</span>${item['Program Studi']}</p>
+                                <p><span class="detail-icon">🏢</span>${item['Nama Perguruan Tinggi']}</p>
+                            </div>
+                            <button class="detail-btn" onclick="event.stopPropagation(); openModal('${item.NIP}')">Lihat Detail</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            }).join('');
+        }
+
+        // Filter by Class
+        function filterByClass(kelas) {
+            currentFilter = kelas;
+            currentProdiFilters = []; // Reset prodi filters
+            currentUniversityFilters = []; // Reset university filters
+            currentGenderFilter = 'all'; // Reset gender filters
+            updateFilterButtons();
+            applyFilters();
+        }
+
+        // Toggle Filter by Prodi (Multi-select)
+        function filterByProdi(prodi) {
+            const index = currentProdiFilters.indexOf(prodi);
+            if (index > -1) {
+                // Jika sudah dipilih, hapus (toggle off)
+                currentProdiFilters.splice(index, 1);
+            } else {
+                // Jika belum dipilih, tambah (toggle on)
+                currentProdiFilters.push(prodi);
+            }
+            updateFilterButtons();
+            applyFilters();
+        }
+
+        // Toggle Filter by University (Multi-select)
+        function filterByUniversity(university) {
+            const index = currentUniversityFilters.indexOf(university);
+            if (index > -1) {
+                // Jika sudah dipilih, hapus (toggle off)
+                currentUniversityFilters.splice(index, 1);
+            } else {
+                // Jika belum dipilih, tambah (toggle on)
+                currentUniversityFilters.push(university);
+            }
+            updateFilterButtons();
+            applyFilters();
+        }
+
+        // Toggle Filter by Gender (Single toggle)
+        function filterByGender(gender) {
+            currentGenderFilter = currentGenderFilter === gender ? 'all' : gender;
+            updateFilterButtons();
+            applyFilters();
+        }
+
+        // Update Filter Buttons UI
+        function updateFilterButtons() {
+            // Update class filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.parentElement.id === 'prodiFilterContainer') return;
+                btn.classList.remove('active');
+            });
+            
+            // Set active class button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.parentElement.id === 'prodiFilterContainer') return;
+                const text = btn.textContent.trim();
+                if ((currentFilter === 'all' && text.includes('Semua')) ||
+                    (currentFilter === 'A' && text.includes('Kelas A')) ||
+                    (currentFilter === 'B' && text.includes('Kelas B')) ||
+                    (currentFilter === 'C' && text.includes('Kelas C'))) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Update prodi filter buttons (multi-select)
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.parentElement.id !== 'prodiFilterContainer') return;
+                btn.classList.remove('active');
+                
+                // Check if any prodi in button matches currentProdiFilters
+                for (let prodi of currentProdiFilters) {
+                    if (btn.textContent.includes(prodi)) {
+                        btn.classList.add('active');
+                        break;
+                    }
+                }
+            });
+
+            // Update university filter buttons (multi-select)
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.parentElement.id !== 'universityFilterContainer') return;
+                btn.classList.remove('active');
+                
+                // Check if any university in button matches currentUniversityFilters
+                for (let university of currentUniversityFilters) {
+                    if (btn.textContent.includes(university)) {
+                        btn.classList.add('active');
+                        break;
+                    }
+                }
+            });
+
+            // Update gender toggle buttons
+            document.querySelectorAll('#genderToggleContainer .filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.gender === currentGenderFilter) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // Apply Filters (Class + Search + Multiple Prodis + Multiple Universities + Gender)
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            filteredAnggota = anggota.filter(item => {
+                const matchClass = currentFilter === 'all' || item.Kelas === currentFilter;
+                const matchSearch = item['Nama Peserta'].toLowerCase().includes(searchTerm);
+                // If no prodi filters selected, match all; otherwise check if item's prodi is in filters
+                const matchProdi = currentProdiFilters.length === 0 || currentProdiFilters.includes(item['Program Studi']);
+                // If no university filters selected, match all; otherwise check if item's university is in filters
+                const matchUniversity = currentUniversityFilters.length === 0 || currentUniversityFilters.includes(item['Nama Perguruan Tinggi']);
+                // If no gender selected, match all; otherwise check exact gender
+                const matchGender = currentGenderFilter === 'all' || item['Jenis Kelamin'] === currentGenderFilter;
+                return matchClass && matchSearch && matchProdi && matchUniversity && matchGender;
+            });
+
+            renderCards(filteredAnggota);
+        }
+
+        // Toggle Prodi Filter Section
+        function toggleProdiFilter() {
+            const section = document.getElementById('prodiFilterSection');
+            const btn = document.querySelector('.toggle-prodi-btn');
+            
+            section.classList.toggle('active');
+            btn.classList.toggle('open');
+            
+            // Update arrow direction
+            const text = btn.textContent;
+            if (section.classList.contains('active')) {
+                btn.textContent = '📚 Filter Berdasarkan Jurusan ▲';
+            } else {
+                btn.textContent = '📚 Filter Berdasarkan Jurusan ▼';
+            }
+        }
+
+        // Toggle University Filter Section
+        function toggleUniversityFilter() {
+            const section = document.getElementById('universityFilterSection');
+            const btn = document.querySelector('.toggle-university-btn');
+            
+            section.classList.toggle('active');
+            btn.classList.toggle('open');
+            
+            // Update arrow direction
+            const text = btn.textContent;
+            if (section.classList.contains('active')) {
+                btn.textContent = '🏫 Filter Berdasarkan Universitas ▲';
+            } else {
+                btn.textContent = '🏫 Filter Berdasarkan Universitas ▼';
+            }
+        }
+
+        // Search Event Listener
+        document.getElementById('searchInput').addEventListener('keyup', applyFilters);
+
+        // Function to handle image loading errors
+        function handleImageError(img) {
+            // Jika gambar gagal load, coba format alternatif
+            const src = img.src;
+            const withoutExt = src.substring(0, src.lastIndexOf('.'));
+            const formats = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+            
+            // Get current extension
+            const currentExt = src.substring(src.lastIndexOf('.'));
+            const otherFormats = formats.filter(f => f !== currentExt);
+            
+            // Try alternative formats
+            let found = false;
+            for (let format of otherFormats) {
+                const newSrc = withoutExt + format;
+                const testImg = new Image();
+                testImg.onload = function() {
+                    img.src = newSrc;
+                    found = true;
+                };
+                testImg.src = newSrc;
+                if (found) break;
+            }
+            
+            // If all fail, show fallback
+            if (!found) {
+                img.style.display = 'none';
+            }
+        }
+
+        // Modal Functions
+        function openModal(nip) {
+            const anggotaData = anggota.find(item => item.NIP === nip);
+            
+            if (anggotaData) {
+                const namaAwal = anggotaData['Nama Peserta'].split(' ')[0].substring(0, 2).toUpperCase();
+                document.getElementById('modalName').textContent = anggotaData['Nama Peserta'];
+                document.getElementById('modalKelas').textContent = `Kelas ${anggotaData.Kelas}`;
+                document.getElementById('modalNIP').textContent = anggotaData.NIP;
+                document.getElementById('modalGender').textContent = anggotaData['Jenis Kelamin'];
+                document.getElementById('modalUniversity').textContent = anggotaData['Nama Perguruan Tinggi'];
+                document.getElementById('modalProdi').textContent = anggotaData['Program Studi'];
+                
+                // Render Instagram as clickable link
+                const igElement = document.getElementById('modalIG');
+                if (anggotaData.IG !== '-') {
+                    const igUsername = anggotaData.IG.replace('@', '');
+                    igElement.innerHTML = `<a href="https://instagram.com/${igUsername}" target="_blank" class="instagram-link">${anggotaData.IG}</a>`;
+                } else {
+                    igElement.textContent = 'Tidak tersedia';
+                }
+                
+                document.getElementById('modalWA').textContent = anggotaData['No WA'] !== '-' ? anggotaData['No WA'] : 'Tidak tersedia';
+                
+                const avatarElement = document.getElementById('modalAvatar');
+                if (anggotaData.Image && anggotaData.Image !== '-') {
+                    avatarElement.innerHTML = `<img src="${anggotaData.Image}" alt="${anggotaData['Nama Peserta']}" class="clickable-image" style="cursor: pointer;" onerror="handleImageError(this)">`;
+                    avatarElement.classList.add('clickable');
+                    // Add click handler for fullscreen image
+                    const imgElement = avatarElement.querySelector('img');
+                    imgElement.onclick = (e) => {
+                        e.stopPropagation();
+                        openImageViewer(anggotaData.Image);
+                    };
+                } else {
+                    avatarElement.innerHTML = namaAwal;
+                    avatarElement.classList.remove('clickable');
+                }
+                
+                const overlay = document.getElementById('modalOverlay');
+                overlay.classList.add('active');
+            }
+        }
+
+        function closeModal() {
+            const overlay = document.getElementById('modalOverlay');
+            overlay.classList.remove('active');
+        }
+
+        // Image Fullscreen Viewer Functions
+        function openImageViewer(imageSrc) {
+            const imgElement = document.getElementById('imageViewerImg');
+            imgElement.src = imageSrc;
+            imgElement.onerror = function() {
+                handleImageError(this);
+            };
+            document.getElementById('imageViewerOverlay').classList.add('active');
+        }
+
+        function closeImageViewer() {
+            document.getElementById('imageViewerOverlay').classList.remove('active');
+        }
+
+        // Close modal when clicking outside the modal content
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close image viewer when clicking outside
+        document.getElementById('imageViewerOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeImageViewer();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const imageViewer = document.getElementById('imageViewerOverlay');
+                const modal = document.getElementById('modalOverlay');
+                
+                // Close image viewer first if it's open
+                if (imageViewer.classList.contains('active')) {
+                    closeImageViewer();
+                } 
+                // Otherwise close modal
+                else if (modal.classList.contains('active')) {
+                    closeModal();
+                }
+            }
+        });
+
+        const backToTopBtn = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Load data on page load
+        window.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>

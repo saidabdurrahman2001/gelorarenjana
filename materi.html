@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perpustakaan Materi Gelora Renjana</title>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pap6Z7Y7VfQJ+6a+6YmQG3fJ+iijKZt3t7vOfSa9GaN5U/6V4a3N+9n0B3WC2+3kYp+v9R+gYV4zF8N9D0YvAA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Public Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #F8F9FA;
+            min-height: 100vh;
+            padding: 30px 20px;
+            color: #333333;
+        }
+        /* global sticky navbar */
+        .global-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            max-width: 1200px;
+            margin: 15px auto;
+            background: #FFFFFF;
+            border: 1px solid #E9ECEF;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 15px;
+            min-height: 50px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #0A3D78;
+            white-space: nowrap;
+        }
+
+        .brand-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            text-decoration: none;
+            color: #0A3D78;
+            padding: 6px 16px;
+            border-radius: 50px;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.92em;
+            white-space: nowrap;
+        }
+        .nav-btn.active {
+            background: #0A3D78;
+            color: white;
+            box-shadow: 0 6px 14px rgba(10, 61, 120, 0.18);
+        }
+        .nav-btn:hover {
+            background: #EAF1F8;
+            color: #0A3D78;
+        }
+
+        .header {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            background: #FFFFFF;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #E9ECEF;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            animation: slideDown 0.6s ease-out;
+            text-align: center;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            color: #333333;
+            margin-bottom: 10px;
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 24px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: #FFFFFF;
+            border-radius: 10px;
+            padding: 22px 20px;
+            border: 1px solid #E9ECEF;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            cursor: default;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+        }
+
+        .card-icon {
+            width: 74px;
+            height: 74px;
+            margin: 0 auto 14px;
+            background: #EAF1F8;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-icon img {
+            width: 78%;
+            height: 78%;
+            object-fit: contain;
+        }
+
+        .card h3 {
+            color: #1F2937;
+            margin-bottom: 14px;
+            font-size: 1.06em;
+            font-weight: 700;
+            line-height: 1.35;
+            min-height: 46px;
+        }
+
+        .card-action button {
+            background: transparent;
+            color: #0A3D78;
+            padding: 9px 16px;
+            border: 1px solid #0A3D78;
+            border-radius: 999px;
+            font-size: 0.88em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 170px;
+        }
+
+        .card-action button:hover {
+            background: #0A3D78;
+            color: #FFFFFF;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            /* Mobile navbar adjustments */
+            .global-nav {
+                padding: 6px 10px;
+                gap: 8px;
+                margin: 10px auto;
+            }
+
+            .nav-logo {
+                font-size: 0.95em;
+                flex: 1 0 auto;
+            }
+
+            .brand-logo {
+                width: 26px;
+                height: 26px;
+            }
+
+            .nav-menu {
+                width: 100%;
+                gap: 8px;
+                justify-content: flex-start;
+            }
+
+            .nav-btn {
+                padding: 4px 10px;
+                font-size: 0.8em;
+                flex: 1 1 auto;
+                text-align: center;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .header-logo {
+                width: 34px;
+                height: 34px;
+            }
+
+            .card-action button {
+                width: 100%;
+                padding: 10px 15px;
+                font-size: 0.95em;
+            }
+        }
+
+        .back-to-top {
+            position: fixed;
+            right: 20px;
+            bottom: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(10, 61, 120, 0.9);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #FFFFFF;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.10);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(8px);
+            transition: all 0.25s ease;
+            z-index: 1100;
+        }
+
+        .back-to-top:hover {
+            background: #0A3D78;
+            color: #FFFFFF;
+            transform: translateY(0);
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- global sticky navbar -->
+    <nav class="global-nav">
+        <div class="nav-logo">
+            <img src="img/logo-gelora.png" alt="Logo Gelora Renjana" class="brand-logo">
+            <span>Gelora Renjana</span>
+        </div>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-btn">Database Anggota</a>
+            <a href="materi.html" class="nav-btn active">Perpustakaan Materi</a>
+        </div>
+    </nav>
+    <div class="header">
+        <h1><img src="img/logo-gelora.png" alt="Logo Gelora Renjana" class="header-logo"> Perpustakaan Materi Gelora Renjana</h1>
+    </div>
+
+    <div class="container">
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/microscope.png" alt="Mikro Ekonomi"></div>
+                <h3>Mikro Ekonomi</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1pX-I5c_eqCBEIVy47PnOSku5l2f53JcI?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/globe--v1.png" alt="Makro Ekonomi"></div>
+                <h3>Makro Ekonomi</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1ykSI6m5x0VrsrnszzoAoHLzoK4rwMl47?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/calculator.png" alt="Akuntansi"></div>
+                <h3>Akuntansi</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1-ZSWjYphNU_LpgX_zTmL93QXAO0r9_Y8?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/wallet.png" alt="Keuangan"></div>
+                <h3>Keuangan</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1qUdUkqh_2A6q7wAiGxZhH15mK7TUoDO7?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/money-bag.png" alt="Ekonomi Moneter"></div>
+                <h3>Ekonomi Moneter</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/19b9ayEMk7z-9yo5EbelplDVxwarLYwEy?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/bank-building.png" alt="Sistem dan Lembaga Keuangan"></div>
+                <h3>Sistem dan Lembaga Keuangan</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1DUP6Ys3njRM9TL1kUcDWUDbFaRH-wY6t?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/document.png" alt="Pengantar Kebijakan Fiskal"></div>
+                <h3>Pengantar Kebijakan Fiskal</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/11vYgry88A1HgeYAm6p59-2mnFRmFhnVb?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/mosque.png" alt="Ekonomi Keuangan Syariah"></div>
+                <h3>Ekonomi Keuangan Syariah</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/13GGMhi-xrVPnHSWM67HASWLPw0DG03Mo?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/survey.png" alt="Metodologi Survey dan Tekni Wawancara"></div>
+                <h3>Metodologi Survey dan Tekni Wawancara</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1iEbHUkxorJ4fyDsWfOcK6OFQWnCTlULk?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/bar-chart.png" alt="Ekonomi Pembangunan"></div>
+                <h3>Ekonomi Pembangunan</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1vW-KSXYuIf9IqotNTpsu1biHZFkkTLki?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/globe--v1.png" alt="Ekonomi Internasional"></div>
+                <h3>Ekonomi Internasional</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1JJoYvSUo8eQgIqW8N-7DFFRXwqHHaY-8?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/map.png" alt="Ekonomi Regional"></div>
+                <h3>Ekonomi Regional</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1KsuGAQcrA8TxbZFXxM4tVYgNA5QJpBYL?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon"><img src="https://img.icons8.com/ios-filled/100/667eea/statistics.png" alt="Konsep & Penyusunan Statistika: PDB & Inflasi"></div>
+                <h3>Konsep & Penyusunan Statistika: PDB & Inflasi</h3>
+                <div class="card-action">
+                    <a href="https://drive.google.com/drive/folders/1pSAcfkHsJPx8HmgQTtbSKVSWXQEDCh37?usp=drive_link" target="_blank"><button>Akses Folder Drive</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">↑</button>
+
+    <script>
+        const backToTopBtn = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>

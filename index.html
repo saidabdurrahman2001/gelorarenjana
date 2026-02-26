@@ -86,6 +86,12 @@
             color: #0A3D78;
         }
 
+        .nav-logout-btn {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+
         .header {
             max-width: 1200px;
             margin: 0 auto 40px;
@@ -935,6 +941,77 @@
             display: none !important;
         }
 
+        .auth-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 61, 120, 0.92);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            padding: 20px;
+        }
+
+        .auth-overlay.active {
+            display: flex;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 420px;
+            background: #FFFFFF;
+            border-radius: 14px;
+            border: 1px solid #D5DEE8;
+            padding: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .auth-card h2 {
+            font-size: 1.2em;
+            color: #0A3D78;
+            margin-bottom: 8px;
+        }
+
+        .auth-card p {
+            color: #475569;
+            margin-bottom: 14px;
+            font-size: 0.92em;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #D5DEE8;
+            border-radius: 10px;
+            font-size: 0.95em;
+            margin-bottom: 12px;
+            outline: none;
+        }
+
+        .auth-input:focus {
+            border-color: #0A3D78;
+            box-shadow: 0 0 0 3px rgba(10, 61, 120, 0.12);
+        }
+
+        .auth-submit {
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            padding: 11px 14px;
+            background: #0A3D78;
+            color: #FFFFFF;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .auth-error {
+            min-height: 20px;
+            margin-top: 10px;
+            color: #B91C1C;
+            font-size: 0.86em;
+            font-weight: 600;
+        }
+
         .back-to-top {
             position: fixed;
             right: 20px;
@@ -972,6 +1049,16 @@
     </style>
 </head>
 <body>
+    <div class="auth-overlay" id="authOverlay">
+        <form class="auth-card" id="authForm">
+            <h2>Akses Terbatas</h2>
+            <p>Masukkan password untuk membuka halaman ini.</p>
+            <input type="password" id="authPassword" class="auth-input" placeholder="Masukkan password" autocomplete="off" required>
+            <button type="submit" class="auth-submit">Masuk</button>
+            <div class="auth-error" id="authError"></div>
+        </form>
+    </div>
+
     <!-- global sticky navbar -->
     <nav class="global-nav">
         <div class="nav-logo">
@@ -981,6 +1068,7 @@
         <div class="nav-menu">
             <a href="index.html" class="nav-btn active">Database Anggota</a>
             <a href="materi.html" class="nav-btn">Perpustakaan Materi</a>
+            <button type="button" class="nav-btn nav-logout-btn" onclick="logoutSession()">Logout</button>
         </div>
     </nav>
     <div class="header">
@@ -1088,6 +1176,65 @@
     </div>
 
     <script>
+        const AUTH_KEY = 'gelora_auth_session';
+        const DEFAULT_PASSWORD = 'admin';
+        let appStarted = false;
+
+        function startApp() {
+            if (appStarted) return;
+            appStarted = true;
+            loadData();
+        }
+
+        function unlockAccess() {
+            document.getElementById('authOverlay').classList.remove('active');
+        }
+
+        function logoutSession() {
+            sessionStorage.removeItem(AUTH_KEY);
+            window.location.href = 'index.html';
+        }
+
+        function initAccessGate() {
+            const authOverlay = document.getElementById('authOverlay');
+            const authForm = document.getElementById('authForm');
+            const authPassword = document.getElementById('authPassword');
+            const authError = document.getElementById('authError');
+            const nextPage = new URLSearchParams(window.location.search).get('next');
+
+            function redirectAfterLogin() {
+                if (nextPage && nextPage.endsWith('.html') && nextPage !== 'index.html') {
+                    window.location.href = nextPage;
+                }
+            }
+
+            if (sessionStorage.getItem(AUTH_KEY) === 'ok') {
+                unlockAccess();
+                startApp();
+                redirectAfterLogin();
+                return;
+            }
+
+            authOverlay.classList.add('active');
+            authPassword.focus();
+
+            authForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                if (authPassword.value === DEFAULT_PASSWORD) {
+                    sessionStorage.setItem(AUTH_KEY, 'ok');
+                    authError.textContent = '';
+                    authPassword.value = '';
+                    unlockAccess();
+                    startApp();
+                    redirectAfterLogin();
+                    return;
+                }
+
+                authError.textContent = 'Password salah. Coba lagi.';
+                authPassword.select();
+            });
+        }
+
         // Fetch data dari data2.json
         let anggota = [];
 
@@ -1550,8 +1697,8 @@
             });
         });
 
-        // Load data on page load
-        window.addEventListener('DOMContentLoaded', loadData);
+        // Load page gate on page load
+        window.addEventListener('DOMContentLoaded', initAccessGate);
     </script>
 </body>
 </html>

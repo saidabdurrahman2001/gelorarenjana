@@ -86,12 +86,6 @@
             color: #0A3D78;
         }
 
-        .nav-logout-btn {
-            border: none;
-            background: transparent;
-            cursor: pointer;
-        }
-
         .header {
             max-width: 1200px;
             margin: 0 auto 40px;
@@ -1068,7 +1062,6 @@
         <div class="nav-menu">
             <a href="index.html" class="nav-btn active">Database Anggota</a>
             <a href="materi.html" class="nav-btn">Perpustakaan Materi</a>
-            <button type="button" class="nav-btn nav-logout-btn" onclick="logoutSession()">Logout</button>
         </div>
     </nav>
     <div class="header">
@@ -1188,11 +1181,6 @@
 
         function unlockAccess() {
             document.getElementById('authOverlay').classList.remove('active');
-        }
-
-        function logoutSession() {
-            sessionStorage.removeItem(AUTH_KEY);
-            window.location.href = 'index.html';
         }
 
         function initAccessGate() {
